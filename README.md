@@ -1,6 +1,6 @@
 # woo-vuetify
 
-![Initial Output]https://github.com/AJOV-Media/nuxt-vuejs-woo-api/blob/master/screenshots/woo-nuxt-initial.jpg)
+![Initial Output](https://github.com/AJOV-Media/nuxt-vuejs-woo-api/blob/master/screenshots/woo-nuxt-initial.jpg)
 
 ## API used
 
