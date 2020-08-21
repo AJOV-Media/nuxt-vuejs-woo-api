@@ -5,32 +5,29 @@
         <v-list three-line>
           <v-subheader>Current Products</v-subheader>
           <template v-for="(item, index) in products">
-            <product-items
-              :key="index"
-              :keyProd="index"
-              :name="item.name"
-              :shortDescription="item.short_description"
-              :price_html="item.price_html"
-              :mainImage="item.images[0]"
-            />
+            <product-items :key="index" :keyProd="index" :products="item" />
           </template>
         </v-list>
       </v-card>
     </v-flex>
+    <ProductDetails v-model="showProductDetails" />
   </v-layout>
 </template>
 
 <script>
 import ProductItems from '~/components/products/ProductItems.vue'
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api'
+import ProductDetails from '~/components/modals/ProductDetails.vue'
 
 export default {
   data: () => ({
     WooCommerce: {},
     products: [],
+    showProductDetails: true,
   }),
   components: {
     'product-items': ProductItems,
+    ProductDetails,
   },
   created() {
     this.WooCommerce = new WooCommerceRestApi({

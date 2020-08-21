@@ -7,20 +7,22 @@
 
       <v-list-item-content>
         <v-list-item-title>
-          {{ name }}
+          {{ products.name }}
           <v-chip class="ma-2" small color="indigo" text-color="white">
             <v-avatar left>
               <v-icon>mdi-cash-multiple</v-icon>
             </v-avatar>
-            <span v-html="price_html"></span>
+            <span v-html="products.price_html"></span>
           </v-chip>
         </v-list-item-title>
         <v-list-item-subtitle>
-          <span v-html="shortDescription"></span>
+          <span v-html="products.short_description"></span>
         </v-list-item-subtitle>
       </v-list-item-content>
       <v-list-item-icon>
-        <v-icon color="indigo accent-4" large>mdi-card-search</v-icon>
+        <v-btn icon dark @click="showProduct=true">
+          <v-icon color="indigo accent-4" large>mdi-card-search</v-icon>
+        </v-btn>
       </v-list-item-icon>
     </v-list-item>
     <v-divider :key="dividerKey"></v-divider>
@@ -33,41 +35,32 @@ import Vue, { PropOptions } from 'vue'
 
 export default {
   props: {
-    name: {
-      type: String,
-      required: true,
+    products: {
+      type: Object,
     },
     keyProd: {
       type: Number,
       required: true,
     },
-    shortDescription: {
-      type: String,
-      required: false,
-    },
-    price_html: {
-      type: String,
-      required: false,
-    },
-    qty: {
-      type: String,
-      required: false,
-    },
-    mainImage: {
-      type: Object,
-      required: false,
-    },
+  },
+  data() {
+    return {
+      showProduct: false,
+    }
   },
   created() {},
   computed: {
     loadMainImage() {
-      return this.mapImage(this.mainImage)
+      return this.mapImage(this.products.images[0])
     },
     dividerKey() {
       return `divider_` + `$this.keyProd`
     },
   },
   methods: {
+    viewProductItem(item) {
+      this.$emit('view-product-item', item)
+    },
     mapImage(image) {
       let imagePath = ''
 
