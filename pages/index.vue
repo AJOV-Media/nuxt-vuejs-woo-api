@@ -20,7 +20,7 @@
   </v-layout>
 </template>
 
-<script lang="ts">
+<script>
 import ProductItems from '~/components/products/ProductItems.vue'
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api'
 

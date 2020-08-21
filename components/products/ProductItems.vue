@@ -28,9 +28,8 @@
 </template>
 
 
-<script lang="ts">
+<script>
 import Vue, { PropOptions } from 'vue'
-// import { ProductListing } from '@/types' TODO: future full TS support
 
 export default {
   props: {
@@ -61,10 +60,10 @@ export default {
   },
   created() {},
   computed: {
-    loadMainImage(): string {
+    loadMainImage() {
       return this.mapImage(this.mainImage)
     },
-    dividerKey(): string {
+    dividerKey() {
       return `divider_` + `$this.keyProd`
     },
   },
