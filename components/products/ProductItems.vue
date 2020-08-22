@@ -7,20 +7,20 @@
 
       <v-list-item-content>
         <v-list-item-title>
-          {{ products.name }}
+          {{ product.name }}
           <v-chip class="ma-2" small color="indigo" text-color="white">
             <v-avatar left>
               <v-icon>mdi-cash-multiple</v-icon>
             </v-avatar>
-            <span v-html="products.price_html"></span>
+            <span v-html="product.price_html"></span>
           </v-chip>
         </v-list-item-title>
         <v-list-item-subtitle>
-          <span v-html="products.short_description"></span>
+          <span v-html="product.short_description"></span>
         </v-list-item-subtitle>
       </v-list-item-content>
       <v-list-item-icon>
-        <v-btn icon dark @click="showProduct=true">
+        <v-btn icon dark @click="viewProduct(product)">
           <v-icon color="indigo accent-4" large>mdi-card-search</v-icon>
         </v-btn>
       </v-list-item-icon>
@@ -35,7 +35,7 @@ import Vue, { PropOptions } from 'vue'
 
 export default {
   props: {
-    products: {
+    product: {
       type: Object,
     },
     keyProd: {
@@ -51,14 +51,14 @@ export default {
   created() {},
   computed: {
     loadMainImage() {
-      return this.mapImage(this.products.images[0])
+      return this.mapImage(this.product.images[0])
     },
     dividerKey() {
       return `divider_` + `$this.keyProd`
     },
   },
   methods: {
-    viewProductItem(item) {
+    viewProduct(item) {
       this.$emit('view-product-item', item)
     },
     mapImage(image) {

@@ -4,13 +4,17 @@
       <v-card class="mx-auto">
         <v-list three-line>
           <v-subheader>Current Products</v-subheader>
-          <template v-for="(item, index) in products">
-            <product-items :key="index" :keyProd="index" :products="item" />
-          </template>
+          <ProductItems
+            v-for="item in products"
+            :key="item.id"
+            :keyProd="item.id"
+            :product="item"
+            @view-product-item="viewProductItem"
+          />
         </v-list>
       </v-card>
     </v-flex>
-    <ProductDetails v-model="showProductDetails" />
+    <ProductDetails :product="productForDetails" v-model="showProductDetails" />
   </v-layout>
 </template>
 
@@ -23,10 +27,11 @@ export default {
   data: () => ({
     WooCommerce: {},
     products: [],
-    showProductDetails: true,
+    productForDetails: {},
+    showProductDetails: false,
   }),
   components: {
-    'product-items': ProductItems,
+    ProductItems,
     ProductDetails,
   },
   created() {
@@ -55,6 +60,10 @@ export default {
         .finally(() => {
           console.log(this.products)
         })
+    },
+    viewProductItem(e) {
+      this.showProductDetails = true
+      this.productForDetails = e
     },
   },
 }
