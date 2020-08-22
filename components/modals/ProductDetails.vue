@@ -1,14 +1,8 @@
 <template>
-  <v-dialog v-model="dialog" width="400">
-    <v-card class="mx-auto" max-width="400">
-      <v-carousel cycle height="400" hide-delimiter-background show-arrows-on-hover>
-        <v-carousel-item v-for="(slide, i) in slides" :key="i">
-          <v-sheet :color="colors[i]" height="100%">
-            <v-row class="fill-height" align="center" justify="center">
-              <div class="display-3">{{ slide }} Slide</div>
-            </v-row>
-          </v-sheet>
-        </v-carousel-item>
+  <v-dialog v-model="dialog" width="420">
+    <v-card class="mx-auto" max-width="420">
+      <v-carousel cycle height="420" hide-delimiter-background show-arrows-on-hover>
+        <v-carousel-item v-for="(item, i) in product.images" :key="i" :src="item.src"></v-carousel-item>
       </v-carousel>
 
       <v-card-title>{{ product.name }}</v-card-title>
