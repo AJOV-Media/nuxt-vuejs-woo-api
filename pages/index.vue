@@ -17,13 +17,11 @@
       </v-flex>
       <ProductDetails :product="productForDetails" v-model="showProductDetails" />
     </v-layout>
-    <v-card v-intersect="infiniteScrolling">
+    <v-card v-show="!lastProduct" v-intersect="infiniteScrolling">
       <v-divider></v-divider>
       <v-card-text>
         <v-progress-circular :size="70" :width="7" :v-show="isMore" color="amber" indeterminate></v-progress-circular>Loading Product Please Wait....
       </v-card-text>
-
-      <v-divider></v-divider>
     </v-card>
   </div>
 </template>
@@ -41,6 +39,8 @@ export default {
     showProductDetails: false,
     currentPage: 0,
     isMore: false,
+    lastProduct: false,
+    prevProdCount: 0,
   }),
   components: {
     ProductItems,
@@ -68,6 +68,11 @@ export default {
           console.log('Error Data:', error)
         })
         .finally(() => {
+          if (this.prevProdCount != this.products.length) {
+            this.prevProdCount = this.products.length
+          } else {
+            this.lastProduct = true
+          }
           this.isMore = false
         })
     },
