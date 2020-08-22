@@ -1,21 +1,31 @@
 <template>
-  <v-layout wrap justify-center align-center>
-    <v-flex xs12 sm12 md12>
-      <v-card class="mx-auto">
-        <v-list three-line>
-          <v-subheader>Current Products</v-subheader>
-          <ProductItems
-            v-for="item in products"
-            :key="item.id"
-            :keyProd="item.id"
-            :product="item"
-            @view-product-item="viewProductItem"
-          />
-        </v-list>
-      </v-card>
-    </v-flex>
-    <ProductDetails :product="productForDetails" v-model="showProductDetails" />
-  </v-layout>
+  <div>
+    <v-layout wrap justify-center align-center>
+      <v-flex xs12 sm12 md12>
+        <v-card class="mx-auto">
+          <v-list three-line>
+            <v-subheader>Current Products</v-subheader>
+            <ProductItems
+              v-for="item in products"
+              :key="item.id"
+              :keyProd="item.id"
+              :product="item"
+              @view-product-item="viewProductItem"
+            />
+          </v-list>
+        </v-card>
+      </v-flex>
+      <ProductDetails :product="productForDetails" v-model="showProductDetails" />
+    </v-layout>
+    <v-card v-intersect="infiniteScrolling">
+      <v-divider></v-divider>
+      <v-card-text>
+        <v-progress-circular :size="70" :width="7" :v-show="isMore" color="amber" indeterminate></v-progress-circular>Loading Product Please Wait....
+      </v-card-text>
+
+      <v-divider></v-divider>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -29,6 +39,8 @@ export default {
     products: [],
     productForDetails: {},
     showProductDetails: false,
+    currentPage: 0,
+    isMore: false,
   }),
   components: {
     ProductItems,
@@ -43,12 +55,10 @@ export default {
       verifySsl: process.env.verifySSL,
       queryStringAuth: process.env.queryStringAuth,
     })
-
-    this.fetchProducts()
   },
   methods: {
-    fetchProducts() {
-      this.WooCommerce.get('products', { page: 1 })
+    fetchProducts(currentPage) {
+      this.WooCommerce.get('products', { page: currentPage })
         .then((response) => {
           Object.keys(response.data).forEach((key) => {
             this.products = [...this.products, response.data[key]]
@@ -58,12 +68,23 @@ export default {
           console.log('Error Data:', error)
         })
         .finally(() => {
-          console.log(this.products)
+          this.isMore = false
         })
     },
     viewProductItem(e) {
       this.showProductDetails = true
       this.productForDetails = e
+    },
+    infiniteScrolling(entries, observer, isIntersecting) {
+      if (isIntersecting) {
+        this.isMore = true
+        setTimeout(() => {
+          this.currentPage++
+          this.fetchProducts(this.currentPage)
+        }, 500)
+      } else {
+        this.isMore = false
+      }
     },
   },
 }
