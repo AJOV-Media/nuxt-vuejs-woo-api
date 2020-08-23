@@ -5,9 +5,29 @@
         <v-carousel-item v-for="(item, i) in product.images" :key="i" :src="item.src"></v-carousel-item>
       </v-carousel>
 
-      <v-card-title>{{ product.name }}</v-card-title>
+      <v-card-title>
+        {{ product.name }}
+        <v-chip class="ma-2" color="white" text-color="indigo" label>
+          <v-icon left>mdi-money</v-icon>
+          <span v-html="product.price_html"></span>
+        </v-chip>
+      </v-card-title>
 
-      <v-card-subtitle v-html="product.price_html"></v-card-subtitle>
+      <v-card-subtitle>
+        <v-chip
+          class="ma-2 categ-chip"
+          color="indigo"
+          text-color="white"
+          v-for="(item, i) in product.categories"
+          :key="i"
+          small
+        >
+          <v-icon left small>mdi-tshirt-crew</v-icon>
+          {{ item.name }}
+        </v-chip>
+      </v-card-subtitle>
+
+      <v-card-subtitle></v-card-subtitle>
 
       <v-card-actions>
         <v-btn color="indigo">Add to Cart</v-btn>
@@ -66,4 +86,7 @@ export default {
 }
 </script>
 <style scoped>
+.v-application .categ-chip {
+  margin-left: 0px !important;
+}
 </style>
