@@ -65,8 +65,13 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
+          title: 'About',
+          to: '/about',
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'Contact Us',
+          to: '/contact',
         },
       ],
       miniVariant: false,
