@@ -27,7 +27,18 @@
         </v-chip>
       </v-card-subtitle>
 
-      <v-card-subtitle></v-card-subtitle>
+      <v-alert
+        v-model="showCartMessage"
+        dismissible
+        close-icon="mdi-delete"
+        color="cyan"
+        border="left"
+        elevation="2"
+        colored-border
+        icon="mdi-cart"
+      >
+        <span v-html="cartMessage"></span>
+      </v-alert>
 
       <v-card-actions>
         <v-text-field v-model="amount" label="Amount" outlined type="number"></v-text-field>
@@ -64,6 +75,8 @@ export default {
   data() {
     return {
       showDetails: false,
+      showCartMessage: false,
+      cartMessage: '',
       amount: 0,
     }
   },
@@ -122,6 +135,9 @@ export default {
         cartObjects.push(addCartObject)
         localStorage.setItem('wooNuxtVueCart', JSON.stringify(cartObjects))
       }
+
+      this.cartMessage = '<stromg>Product</strong> Added to your cart'
+      this.showCartMessage = true
     },
   },
 }
