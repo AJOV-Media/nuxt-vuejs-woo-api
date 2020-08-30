@@ -30,6 +30,7 @@
       <v-card-subtitle></v-card-subtitle>
 
       <v-card-actions>
+        <v-text-field v-model="amount" label="Amount" outlined type="number"></v-text-field>
         <v-btn color="indigo">Add to Cart</v-btn>
 
         <v-btn color="red" @click="dialog = false">Close</v-btn>
@@ -63,14 +64,7 @@ export default {
   data() {
     return {
       showDetails: false,
-      colors: [
-        'indigo',
-        'warning',
-        'pink darken-2',
-        'red lighten-1',
-        'deep-purple accent-4',
-      ],
-      slides: ['First', 'Second', 'Third', 'Fourth', 'Fifth'],
+      amount: 0,
     }
   },
   computed: {
@@ -88,5 +82,17 @@ export default {
 <style scoped>
 .v-application .categ-chip {
   margin-left: 0px !important;
+}
+.v-text-field {
+  width: 50px;
+  font-size: 12px;
+  height: 50px;
+  margin-right: 10px;
+}
+.v-text-field input {
+  font-size: 12px;
+}
+.v-text-field label {
+  font-size: 12px;
 }
 </style>
