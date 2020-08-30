@@ -31,7 +31,7 @@
 
       <v-card-actions>
         <v-text-field v-model="amount" label="Amount" outlined type="number"></v-text-field>
-        <v-btn color="indigo">Add to Cart</v-btn>
+        <v-btn color="indigo" @click="addToCart(product.id)">Add to Cart</v-btn>
 
         <v-btn color="red" @click="dialog = false">Close</v-btn>
 
@@ -75,6 +75,53 @@ export default {
       set(value) {
         this.$emit('input', value)
       },
+    },
+  },
+  methods: {
+    addToCart(productId) {
+      let retrieveCartObjects
+
+      retrieveCartObjects = localStorage.getItem('wooNuxtVueCart')
+      let cartObjects = JSON.parse(retrieveCartObjects || '[]')
+
+      if (cartObjects.length > 0) {
+        let updateCartObject = {}
+        let updatedCartObjects = JSON.parse('[]')
+        let alreadyAdded = false
+        for (var i = 0; i < cartObjects.length; i++) {
+          if (cartObjects[i].product_id === productId) {
+            //if product id is already on the cart
+            alreadyAdded = true
+            updateCartObject = {
+              product_id: cartObjects[i].product_id,
+              howMany: 5,
+            }
+          } else {
+            updateCartObject = {
+              product_id: cartObjects[i].product_id,
+              howMany: cartObjects[i].howMany,
+            }
+          }
+          updatedCartObjects.push(updateCartObject)
+        }
+        if (!alreadyAdded) {
+          updateCartObject = {
+            product_id: productId,
+            howMany: 1,
+          }
+          updatedCartObjects.push(updateCartObject)
+          alreadyAdded = false
+        }
+        localStorage.setItem(
+          'wooNuxtVueCart',
+          JSON.stringify(updatedCartObjects)
+        )
+      } else {
+        //only if cart is all empty
+        let addCartObject = { product_id: productId, howMany: 1 }
+        cartObjects.push(addCartObject)
+        localStorage.setItem('wooNuxtVueCart', JSON.stringify(cartObjects))
+      }
     },
   },
 }
