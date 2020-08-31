@@ -31,6 +31,11 @@
     </v-app-bar>
     <v-main>
       <v-container>
+        <v-btn class="mx-2" fab dark large color="indigo" fixed right bottom>
+          <v-badge color="red" :content="cartCount">
+            <v-icon dark>mdi-cart-arrow-down</v-icon>
+          </v-badge>
+        </v-btn>
         <nuxt />
       </v-container>
     </v-main>
@@ -79,6 +84,20 @@ export default {
       rightDrawer: false,
       title: 'Woo API + Vuetify.js',
     }
+  },
+  computed: {
+    cartCount() {
+      let retrieveCartObjects
+
+      retrieveCartObjects = localStorage.getItem('wooNuxtVueCart')
+      let cartObjects = JSON.parse(retrieveCartObjects || '[]')
+
+      if (cartObjects.length > 0) {
+        return cartObjects.length
+      }
+
+      return 0
+    },
   },
 }
 </script>
