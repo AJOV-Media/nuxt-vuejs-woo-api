@@ -31,7 +31,7 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <v-btn class="mx-2" fab dark large color="indigo" fixed right bottom>
+        <v-btn class="mx-2" fab dark large color="indigo" to="/cart" fixed right bottom>
           <v-badge color="red" :content="cartCount">
             <v-icon dark>mdi-cart-arrow-down</v-icon>
           </v-badge>
