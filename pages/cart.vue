@@ -17,12 +17,6 @@
       </v-flex>
       <ProductDetails :product="productForDetails" v-model="showProductDetails" />
     </v-layout>
-    <v-card v-show="!lastProduct" v-intersect="infiniteScrolling">
-      <v-divider></v-divider>
-      <v-card-text>
-        <v-progress-circular :size="70" :width="7" :v-show="isMore" color="amber" indeterminate></v-progress-circular>Loading Product Please Wait....
-      </v-card-text>
-    </v-card>
   </div>
 </template>
 
@@ -38,8 +32,7 @@ export default {
     productForDetails: {},
     showProductDetails: false,
     currentPage: 0,
-    isMore: false,
-    lastProduct: false,
+    totalPrice: 0,
     prevProdCount: 0,
   }),
   components: {
@@ -55,41 +48,34 @@ export default {
       verifySsl: process.env.verifySSL,
       queryStringAuth: process.env.queryStringAuth,
     })
+
+    let retrieveCartObjects
+
+    retrieveCartObjects = localStorage.getItem('wooNuxtVueCart')
+    let cartObjects = JSON.parse(retrieveCartObjects || '[]')
+
+    if (cartObjects.length > 0) {
+      for (var i = 0; i < cartObjects.length; i++) {
+        let howMany = cartObjects[i].howMany
+        this.WooCommerce.get('products/' + cartObjects[i].product_id)
+          .then((response) => {
+            response.data.qty = howMany
+
+            this.products = [...this.products, response.data]
+          })
+          .catch((error) => {
+            console.log('Error Data:', error)
+          })
+          .finally(() => {
+            //Add Loader?
+          })
+      }
+    }
   },
   methods: {
-    fetchProducts(currentPage) {
-      this.WooCommerce.get('products', { page: currentPage })
-        .then((response) => {
-          Object.keys(response.data).forEach((key) => {
-            this.products = [...this.products, response.data[key]]
-          })
-        })
-        .catch((error) => {
-          console.log('Error Data:', error)
-        })
-        .finally(() => {
-          if (this.prevProdCount != this.products.length) {
-            this.prevProdCount = this.products.length
-          } else {
-            this.lastProduct = true
-          }
-          this.isMore = false
-        })
-    },
     viewProductItem(e) {
       this.showProductDetails = true
       this.productForDetails = e
-    },
-    infiniteScrolling(entries, observer, isIntersecting) {
-      if (isIntersecting) {
-        this.isMore = true
-        setTimeout(() => {
-          this.currentPage++
-          this.fetchProducts(this.currentPage)
-        }, 500)
-      } else {
-        this.isMore = false
-      }
     },
   },
 }
