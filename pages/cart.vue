@@ -12,6 +12,14 @@
               :product="item"
               @view-product-item="viewProductItem"
             />
+            <v-divider></v-divider>
+            <v-subheader>Total</v-subheader>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>$ {{ totalPrice }}</v-list-item-title>
+                <v-list-item-subtitle>Lorem ipsum</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
         </v-card>
       </v-flex>
@@ -60,6 +68,7 @@ export default {
         this.WooCommerce.get('products/' + cartObjects[i].product_id)
           .then((response) => {
             response.data.qty = howMany
+            this.totalPrice += Number(response.data.price) * response.data.qty
 
             this.products = [...this.products, response.data]
           })
