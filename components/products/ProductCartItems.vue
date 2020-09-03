@@ -19,11 +19,15 @@
           <span v-html="product.short_description"></span>
         </v-list-item-subtitle>
       </v-list-item-content>
-      <v-list-item-icon>
-        <v-btn icon dark @click="viewProduct(product)">
-          <v-icon color="indigo accent-4" large>mdi-card-search</v-icon>
-        </v-btn>
-      </v-list-item-icon>
+      <v-list-item-action>
+        <v-text-field
+          label="Qty"
+          placeholder="0"
+          style="width: 50px;"
+          v-model="product.qty"
+          outlined
+        ></v-text-field>
+      </v-list-item-action>
     </v-list-item>
     <v-divider :key="dividerKey"></v-divider>
   </div>
