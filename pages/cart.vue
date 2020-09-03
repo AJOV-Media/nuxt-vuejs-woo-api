@@ -5,12 +5,11 @@
         <v-card class="mx-auto">
           <v-list three-line>
             <v-subheader>Cart</v-subheader>
-            <ProductItems
+            <ProductCartItems
               v-for="item in products"
               :key="item.id"
               :keyProd="item.id"
               :product="item"
-              @view-product-item="viewProductItem"
             />
             <v-divider></v-divider>
             <v-subheader>Total</v-subheader>
@@ -23,29 +22,25 @@
           </v-list>
         </v-card>
       </v-flex>
-      <ProductDetails :product="productForDetails" v-model="showProductDetails" />
     </v-layout>
   </div>
 </template>
 
 <script>
-import ProductItems from '~/components/products/ProductItems.vue'
+import ProductCartItems from '~/components/products/ProductCartItems.vue'
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api'
-import ProductDetails from '~/components/modals/ProductDetails.vue'
 
 export default {
   data: () => ({
     WooCommerce: {},
     products: [],
-    productForDetails: {},
     showProductDetails: false,
     currentPage: 0,
     totalPrice: 0,
     prevProdCount: 0,
   }),
   components: {
-    ProductItems,
-    ProductDetails,
+    ProductCartItems,
   },
   created() {
     this.WooCommerce = new WooCommerceRestApi({
@@ -81,11 +76,6 @@ export default {
       }
     }
   },
-  methods: {
-    viewProductItem(e) {
-      this.showProductDetails = true
-      this.productForDetails = e
-    },
-  },
+  methods: {},
 }
 </script>
