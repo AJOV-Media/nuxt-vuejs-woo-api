@@ -33,23 +33,31 @@
                   label="First Name"
                   type="text"
                   v-model="person.first_name"
-                  :rules="nameRules"
+                  :rules="validationRules.nameRules"
                   required
                 ></v-text-field>
                 <v-text-field
                   outline
                   label="Last Name"
                   type="text"
-                  :rules="nameRules"
+                  :rules="validationRules.nameRules"
                   v-model="person.last_name"
                   required
                 ></v-text-field>
-                <v-text-field outline label="Email" type="email" v-model="person.email" required></v-text-field>
+                <v-text-field
+                  outline
+                  label="Email"
+                  type="email"
+                  v-model="person.email"
+                  :rules="validationRules.emailRules"
+                  required
+                ></v-text-field>
                 <v-text-field
                   outline
                   label="Username"
                   type="text"
                   v-model="person.username"
+                  :rules="validationRules.usernameRules"
                   required
                 ></v-text-field>
                 <v-text-field
@@ -57,6 +65,7 @@
                   label="Password"
                   type="password"
                   v-model="person.password"
+                  :rules="validationRules.passwordRules"
                   required
                 ></v-text-field>
                 <v-text-field
@@ -64,6 +73,7 @@
                   label="Confirm Password"
                   type="password"
                   v-model="confirm_password"
+                  :rules="[passwordConfirmationRule]"
                 ></v-text-field>
               </v-form>
 
@@ -138,7 +148,21 @@ export default {
       e1: 1,
       countryItems: ['USA', 'Japan', 'Philippines', 'India', 'Australia'],
       stateItems: ['Texas', 'Tokyo', 'Luzon', 'Mumbai', 'Victoria'],
-      nameRules: [(v) => !!v || 'Name is required'],
+      validationRules: {
+        nameRules: [(v) => !!v || 'Name is required'],
+        usernameRules: [
+          (v) => !!v || 'Username is required',
+          (v) => v.length >= 8 || 'Min 8 characters',
+        ],
+        passwordRules: [
+          (v) => !!v || 'Password is required',
+          (v) => v.length >= 8 || 'Min 8 characters',
+        ],
+        emailRules: [
+          (v) => !!v || 'E-mail is required',
+          (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+        ],
+      },
       person: {
         firstname: '',
         lastname: '',
@@ -166,6 +190,14 @@ export default {
         phone: '',
       },
     }
+  },
+  computed: {
+    passwordConfirmationRule() {
+      return (
+        this.person.password === this.person.confirm_password ||
+        'Password must match'
+      )
+    },
   },
 }
 </script>
