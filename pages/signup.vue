@@ -27,7 +27,7 @@
 
           <v-stepper-items>
             <v-stepper-content step="1">
-              <v-form class="mb-12">
+              <v-form class="mb-12" ref="formPD" v-model="validPersonalDetails">
                 <v-text-field
                   outline
                   label="First Name"
@@ -77,7 +77,7 @@
                 ></v-text-field>
               </v-form>
 
-              <v-btn color="primary" @click="e1 = 2">Continue</v-btn>
+              <v-btn color="primary" :disabled="!validPersonalDetails" @click="e1 = 2">Continue</v-btn>
             </v-stepper-content>
 
             <v-stepper-content step="2">
@@ -148,6 +148,7 @@ export default {
       e1: 1,
       countryItems: ['USA', 'Japan', 'Philippines', 'India', 'Australia'],
       stateItems: ['Texas', 'Tokyo', 'Luzon', 'Mumbai', 'Victoria'],
+      validPersonalDetails: true,
       validationRules: {
         nameRules: [(v) => !!v || 'Name is required'],
         usernameRules: [
@@ -194,8 +195,7 @@ export default {
   computed: {
     passwordConfirmationRule() {
       return (
-        this.person.password === this.person.confirm_password ||
-        'Password must match'
+        this.person.password === this.confirm_password || 'Password must match'
       )
     },
   },
