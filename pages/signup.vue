@@ -42,24 +42,62 @@
               </v-form>
 
               <v-btn color="primary" @click="e1 = 2">Continue</v-btn>
-
-              <v-btn text>Cancel</v-btn>
             </v-stepper-content>
 
             <v-stepper-content step="2">
-              <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
+              <v-form class="mb-12">
+                <v-textarea
+                  v-model="billing.address_1"
+                  label="Billing Address 1"
+                  rows="2"
+                  :auto-grow="true"
+                ></v-textarea>
+
+                <v-textarea
+                  v-model="billing.address_2"
+                  label="Billing Address 1"
+                  rows="2"
+                  :auto-grow="true"
+                ></v-textarea>
+
+                <v-select :items="countryItems" v-model="billing.country" label="Countries"></v-select>
+                <v-select :items="stateItems" v-model="billing.state" label="State"></v-select>
+                <v-text-field outline label="City" type="text" v-model="billing.city"></v-text-field>
+                <v-text-field outline label="Postal Code" type="text" v-model="billing.postcode"></v-text-field>
+                <v-text-field outline label="Phone" type="text" v-model="billing.phone"></v-text-field>
+              </v-form>
 
               <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
 
-              <v-btn text>Cancel</v-btn>
+              <v-btn text>Back</v-btn>
             </v-stepper-content>
 
             <v-stepper-content step="3">
-              <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
+              <v-form class="mb-12">
+                <v-textarea
+                  v-model="shipping.address_1"
+                  label="Shipping Address 1"
+                  rows="2"
+                  :auto-grow="true"
+                ></v-textarea>
 
-              <v-btn color="primary" @click="e1 = 1">Continue</v-btn>
+                <v-textarea
+                  v-model="shipping.address_2"
+                  label="Shipping Address 1"
+                  rows="2"
+                  :auto-grow="true"
+                ></v-textarea>
 
-              <v-btn text>Cancel</v-btn>
+                <v-select :items="countryItems" v-model="shipping.country" label="Countries"></v-select>
+                <v-select :items="stateItems" v-model="shipping.state" label="State"></v-select>
+                <v-text-field outline label="City" type="text" v-model="shipping.city"></v-text-field>
+                <v-text-field outline label="Postal Code" type="text" v-model="shipping.postcode"></v-text-field>
+                <v-text-field outline label="Phone" type="text" v-model="shipping.phone"></v-text-field>
+              </v-form>
+
+              <v-btn color="primary" @click="saveData()">Register</v-btn>
+
+              <v-btn text>Back</v-btn>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -72,6 +110,26 @@ export default {
   data() {
     return {
       e1: 1,
+      countryItems: ['USA', 'Japan', 'Philippines', 'India', 'Australia'],
+      stateItems: ['Texas', 'Tokyo', 'Luzon', 'Mumbai', 'Victoria'],
+      billing: {
+        address_1: '',
+        address_2: '',
+        coutry: '',
+        state: '',
+        postcode: '',
+        city: '',
+        phone: '',
+      },
+      shipping: {
+        address_1: '',
+        address_2: '',
+        coutry: '',
+        state: '',
+        postcode: '',
+        city: '',
+        phone: '',
+      },
     }
   },
 }
