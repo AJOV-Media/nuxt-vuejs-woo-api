@@ -28,11 +28,37 @@
           <v-stepper-items>
             <v-stepper-content step="1">
               <v-form class="mb-12">
-                <v-text-field outline label="First Name" type="text" v-model="firstname"></v-text-field>
-                <v-text-field outline label="Last Name" type="text" v-model="lastname"></v-text-field>
-                <v-text-field outline label="Email" type="email" v-model="email"></v-text-field>
-                <v-text-field outline label="Username" type="text" v-model="username"></v-text-field>
-                <v-text-field outline label="Password" type="password" v-model="password"></v-text-field>
+                <v-text-field
+                  outline
+                  label="First Name"
+                  type="text"
+                  v-model="person.first_name"
+                  :rules="nameRules"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  outline
+                  label="Last Name"
+                  type="text"
+                  :rules="nameRules"
+                  v-model="person.last_name"
+                  required
+                ></v-text-field>
+                <v-text-field outline label="Email" type="email" v-model="person.email" required></v-text-field>
+                <v-text-field
+                  outline
+                  label="Username"
+                  type="text"
+                  v-model="person.username"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  outline
+                  label="Password"
+                  type="password"
+                  v-model="person.password"
+                  required
+                ></v-text-field>
                 <v-text-field
                   outline
                   label="Confirm Password"
@@ -69,7 +95,7 @@
 
               <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
 
-              <v-btn text>Back</v-btn>
+              <v-btn text @click="e1 = 1">Back</v-btn>
             </v-stepper-content>
 
             <v-stepper-content step="3">
@@ -97,7 +123,7 @@
 
               <v-btn color="primary" @click="saveData()">Register</v-btn>
 
-              <v-btn text>Back</v-btn>
+              <v-btn text @click="e1 = 1">Back</v-btn>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -112,6 +138,15 @@ export default {
       e1: 1,
       countryItems: ['USA', 'Japan', 'Philippines', 'India', 'Australia'],
       stateItems: ['Texas', 'Tokyo', 'Luzon', 'Mumbai', 'Victoria'],
+      nameRules: [(v) => !!v || 'Name is required'],
+      person: {
+        firstname: '',
+        lastname: '',
+        email: '',
+        username: '',
+        password: '',
+      },
+      confirm_password: '',
       billing: {
         address_1: '',
         address_2: '',
