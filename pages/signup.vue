@@ -81,10 +81,11 @@
             </v-stepper-content>
 
             <v-stepper-content step="2">
-              <v-form class="mb-12">
+              <v-form class="mb-12" v-model="validBilling">
                 <v-textarea
                   v-model="billing.address_1"
                   label="Billing Address 1"
+                  :rules="validationRules.billingAddress"
                   rows="2"
                   :auto-grow="true"
                 ></v-textarea>
@@ -96,14 +97,42 @@
                   :auto-grow="true"
                 ></v-textarea>
 
-                <v-select :items="countryItems" v-model="billing.country" label="Countries"></v-select>
-                <v-select :items="stateItems" v-model="billing.state" label="State"></v-select>
-                <v-text-field outline label="City" type="text" v-model="billing.city"></v-text-field>
-                <v-text-field outline label="Postal Code" type="text" v-model="billing.postcode"></v-text-field>
-                <v-text-field outline label="Phone" type="text" v-model="billing.phone"></v-text-field>
+                <v-select
+                  :items="countryItems"
+                  v-model="billing.country"
+                  label="Country"
+                  :rules="validationRules.countryRules"
+                ></v-select>
+                <v-select
+                  :items="stateItems"
+                  v-model="billing.state"
+                  label="State"
+                  :rules="validationRules.stateRules"
+                ></v-select>
+                <v-text-field
+                  outline
+                  label="City"
+                  type="text"
+                  v-model="billing.city"
+                  :rules="validationRules.cityRules"
+                ></v-text-field>
+                <v-text-field
+                  outline
+                  label="Postal Code"
+                  type="text"
+                  v-model="billing.postcode"
+                  :rules="validationRules.postcodeRules"
+                ></v-text-field>
+                <v-text-field
+                  outline
+                  label="Phone"
+                  type="text"
+                  v-model="billing.phone"
+                  :rules="validationRules.phoneRules"
+                ></v-text-field>
               </v-form>
 
-              <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
+              <v-btn color="primary" :disabled="!validBilling" @click="e1 = 3">Continue</v-btn>
 
               <v-btn text @click="e1 = 1">Back</v-btn>
             </v-stepper-content>
@@ -149,6 +178,8 @@ export default {
       countryItems: ['USA', 'Japan', 'Philippines', 'India', 'Australia'],
       stateItems: ['Texas', 'Tokyo', 'Luzon', 'Mumbai', 'Victoria'],
       validPersonalDetails: true,
+      validBilling: true,
+      validShipping: true,
       validationRules: {
         nameRules: [(v) => !!v || 'Name is required'],
         usernameRules: [
@@ -163,6 +194,15 @@ export default {
           (v) => !!v || 'E-mail is required',
           (v) => /.+@.+/.test(v) || 'E-mail must be valid',
         ],
+        billingAddress: [
+          (v) => !!v || 'Billing address required',
+          (v) => v.length >= 12 || 'Address to short',
+        ],
+        countryRules: [(v) => !!v || 'Country is required'],
+        stateRules: [(v) => !!v || 'State is required'],
+        cityRules: [(v) => !!v || 'City is required'],
+        postcodeRules: [(v) => !!v || 'Post Code is required'],
+        phoneRules: [(v) => !!v || 'Phone is required'],
       },
       person: {
         firstname: '',
