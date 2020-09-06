@@ -138,11 +138,13 @@
             </v-stepper-content>
 
             <v-stepper-content step="3">
-              <v-form class="mb-12">
+              <v-checkbox v-model="copyBilling" label="Same as Billing" color="indigo" value="0"></v-checkbox>
+              <v-form class="mb-12" v-model="validShipping">
                 <v-textarea
                   v-model="shipping.address_1"
                   label="Shipping Address 1"
                   rows="2"
+                  :rules="validationRules.shippingAddress"
                   :auto-grow="true"
                 ></v-textarea>
 
@@ -153,14 +155,42 @@
                   :auto-grow="true"
                 ></v-textarea>
 
-                <v-select :items="countryItems" v-model="shipping.country" label="Countries"></v-select>
-                <v-select :items="stateItems" v-model="shipping.state" label="State"></v-select>
-                <v-text-field outline label="City" type="text" v-model="shipping.city"></v-text-field>
-                <v-text-field outline label="Postal Code" type="text" v-model="shipping.postcode"></v-text-field>
-                <v-text-field outline label="Phone" type="text" v-model="shipping.phone"></v-text-field>
+                <v-select
+                  :items="countryItems"
+                  v-model="shipping.country"
+                  :rules="validationRules.countryRules"
+                  label="Countries"
+                ></v-select>
+                <v-select
+                  :items="stateItems"
+                  v-model="shipping.state"
+                  :rules="validationRules.stateRules"
+                  label="State"
+                ></v-select>
+                <v-text-field
+                  outline
+                  label="City"
+                  type="text"
+                  :rules="validationRules.cityRules"
+                  v-model="shipping.city"
+                ></v-text-field>
+                <v-text-field
+                  outline
+                  label="Postal Code"
+                  type="text"
+                  :rules="validationRules.postcodeRules"
+                  v-model="shipping.postcode"
+                ></v-text-field>
+                <v-text-field
+                  outline
+                  label="Phone"
+                  type="text"
+                  :rules="validationRules.phoneRules"
+                  v-model="shipping.phone"
+                ></v-text-field>
               </v-form>
 
-              <v-btn color="primary" @click="saveData()">Register</v-btn>
+              <v-btn color="primary" :disabled="!validShipping" @click="saveData()">Register</v-btn>
 
               <v-btn text @click="e1 = 1">Back</v-btn>
             </v-stepper-content>
@@ -180,6 +210,7 @@ export default {
       validPersonalDetails: true,
       validBilling: true,
       validShipping: true,
+      copyBilling: false,
       validationRules: {
         nameRules: [(v) => !!v || 'Name is required'],
         usernameRules: [
@@ -196,6 +227,10 @@ export default {
         ],
         billingAddress: [
           (v) => !!v || 'Billing address required',
+          (v) => v.length >= 12 || 'Address to short',
+        ],
+        shippingAddress: [
+          (v) => !!v || 'Shipping address required',
           (v) => v.length >= 12 || 'Address to short',
         ],
         countryRules: [(v) => !!v || 'Country is required'],
