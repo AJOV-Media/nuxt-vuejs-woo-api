@@ -138,7 +138,12 @@
             </v-stepper-content>
 
             <v-stepper-content step="3">
-              <v-checkbox v-model="copyBilling" label="Same as Billing" color="indigo" value="0"></v-checkbox>
+              <v-checkbox
+                v-model="copyBilling"
+                label="Same as Billing"
+                color="indigo"
+                @change="billingToShipping"
+              ></v-checkbox>
               <v-form class="mb-12" v-model="validShipping">
                 <v-textarea
                   v-model="shipping.address_1"
@@ -272,6 +277,27 @@ export default {
       return (
         this.person.password === this.confirm_password || 'Password must match'
       )
+    },
+  },
+  methods: {
+    billingToShipping() {
+      if (this.copyBilling) {
+        this.shipping.address_1 = this.billing.address_1
+        this.shipping.address_2 = this.billing.address_2
+        this.shipping.country = this.billing.country
+        this.shipping.state = this.billing.state
+        this.shipping.postcode = this.billing.postcode
+        this.shipping.city = this.billing.city
+        this.shipping.phone = this.billing.phone
+      } else {
+        this.shipping.address_1 = ''
+        this.shipping.address_2 = ''
+        this.shipping.country = ''
+        this.shipping.state = ''
+        this.shipping.postcode = ''
+        this.shipping.city = ''
+        this.shipping.phone = ''
+      }
     },
   },
 }
