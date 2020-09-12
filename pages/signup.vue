@@ -206,9 +206,12 @@
   </v-layout>
 </template>
 <script>
+import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api'
+
 export default {
   data() {
     return {
+      WooCommerce: {},
       e1: 1,
       countryItems: ['USA', 'Japan', 'Philippines', 'India', 'Australia'],
       stateItems: ['Texas', 'Tokyo', 'Luzon', 'Mumbai', 'Victoria'],
@@ -279,6 +282,16 @@ export default {
       )
     },
   },
+  created() {
+    this.WooCommerce = new WooCommerceRestApi({
+      url: process.env.wooURL,
+      consumerKey: process.env.consumerKey,
+      consumerSecret: process.env.consumerSecret,
+      version: process.env.wooVersion,
+      verifySsl: process.env.verifySSL,
+      queryStringAuth: process.env.queryStringAuth,
+    })
+  },
   methods: {
     billingToShipping() {
       if (this.copyBilling) {
@@ -298,6 +311,28 @@ export default {
         this.shipping.city = ''
         this.shipping.phone = ''
       }
+    },
+    saveData() {
+      if (this.validShipping) {
+        const userFormFields = {
+          first_name: this.person.firstname,
+          last_name: this.person.lastname,
+          email: this.person.email,
+          username: this.person.username,
+          password: this.person.password,
+          shipping: this.shipping,
+          billing: this.billing,
+        }
+        this.WooCommerce.post('customers', userFormFields)
+          .then((response) => {
+            console.log(response)
+            // Successful request
+          })
+          .catch((error) => {})
+          .finally(() => {
+            // Always executed.
+          })
+      } //make sure stage 3 of registration is A-OKAY
     },
   },
 }
