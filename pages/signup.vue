@@ -258,8 +258,8 @@ export default {
         phoneRules: [(v) => !!v || 'Phone is required'],
       },
       person: {
-        firstname: '',
-        lastname: '',
+        first_name: '',
+        last_name: '',
         email: '',
         username: '',
         password: '',
@@ -325,8 +325,8 @@ export default {
     saveData() {
       if (this.validShipping) {
         const userFormFields = {
-          first_name: this.person.firstname,
-          last_name: this.person.lastname,
+          first_name: this.person.first_name,
+          last_name: this.person.last_name,
           email: this.person.email,
           username: this.person.username,
           password: this.person.password,
