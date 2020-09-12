@@ -1,6 +1,14 @@
 <template>
   <v-layout wrap justify-center align-center>
     <v-flex xs12 sm12 md12>
+      <v-snackbar v-model="snackbarMsg" color="success" right="right" timeout="6000" top="top">
+        {{ snackbarContent }}
+        <v-btn @click="snackbarMsg = false" color="error">
+          Close
+          <v-icon dark right>mdi-close-circle</v-icon>
+        </v-btn>
+      </v-snackbar>
+
       <v-card elevation="4" light tag="section">
         <v-card-title>
           <v-layout align-center justify-space-between>
@@ -212,6 +220,8 @@ export default {
   data() {
     return {
       WooCommerce: {},
+      snackbarContent: '',
+      snackbarMsg: false,
       e1: 1,
       countryItems: ['USA', 'Japan', 'Philippines', 'India', 'Australia'],
       stateItems: ['Texas', 'Tokyo', 'Luzon', 'Mumbai', 'Victoria'],
@@ -325,7 +335,9 @@ export default {
         }
         this.WooCommerce.post('customers', userFormFields)
           .then((response) => {
-            console.log(response)
+            this.snackbarMsg = true
+            this.snackbarContent =
+              'Registration successful, You can now login with that account'
             // Successful request
           })
           .catch((error) => {})
