@@ -1,6 +1,10 @@
 <template>
   <v-layout wrap justify-center align-center>
     <v-flex xs12 sm12 md12>
+      <v-overlay absolute="absolute" :value="showLoader">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
+
       <v-snackbar v-model="snackbarMsg" color="success" right="right" timeout="6000" top="top">
         {{ snackbarContent }}
         <v-btn @click="snackbarMsg = false" color="error">
@@ -222,6 +226,7 @@ export default {
       WooCommerce: {},
       snackbarContent: '',
       snackbarMsg: false,
+      showLoader: false,
       e1: 1,
       countryItems: ['USA', 'Japan', 'Philippines', 'India', 'Australia'],
       stateItems: ['Texas', 'Tokyo', 'Luzon', 'Mumbai', 'Victoria'],
@@ -333,6 +338,7 @@ export default {
           shipping: this.shipping,
           billing: this.billing,
         }
+        this.showLoader = true
         this.WooCommerce.post('customers', userFormFields)
           .then((response) => {
             this.snackbarMsg = true
@@ -342,6 +348,7 @@ export default {
           })
           .catch((error) => {})
           .finally(() => {
+            this.showLoader = false
             // Always executed.
           })
       } //make sure stage 3 of registration is A-OKAY
