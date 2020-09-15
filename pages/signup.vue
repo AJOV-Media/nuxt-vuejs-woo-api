@@ -5,7 +5,13 @@
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
 
-      <v-snackbar v-model="snackbarMsg" color="success" right="right" timeout="6000" top="top">
+      <v-snackbar
+        v-model="snackbarMsg"
+        :color="snackbarColor"
+        right="right"
+        timeout="6000"
+        top="top"
+      >
         {{ snackbarContent }}
         <v-btn @click="snackbarMsg = false" color="error">
           Close
@@ -62,6 +68,7 @@
                   type="email"
                   v-model="person.email"
                   :rules="validationRules.emailRules"
+                  v-on:blur="usernameUniqueRule()"
                   required
                 ></v-text-field>
                 <v-text-field
@@ -225,6 +232,7 @@ export default {
     return {
       WooCommerce: {},
       snackbarContent: '',
+      snackbarColor: 'success',
       snackbarMsg: false,
       showLoader: false,
       e1: 1,
@@ -327,6 +335,30 @@ export default {
         this.shipping.phone = ''
       }
     },
+    usernameUniqueRule() {
+      let message = ''
+      let emailAlreadyRegistered = ''
+      this.WooCommerce.get('customers?email=' + this.person.email)
+        .then((response) => {
+          if (response.data[0].email) {
+            this.snackbarColor = 'error'
+            message = 'This email is not available'
+            emailAlreadyRegistered = true
+          }
+        })
+        .catch((error) => {
+          console.log('Error Data:', error.data)
+        })
+        .finally(() => {
+          if (!emailAlreadyRegistered) {
+            this.snackbarColor = 'success'
+            message = 'Email is available, you can use this email address'
+          }
+
+          this.snackbarMsg = true
+          this.snackbarContent = message
+        })
+    },
     saveData() {
       if (this.validShipping) {
         const userFormFields = {
@@ -341,6 +373,7 @@ export default {
         this.showLoader = true
         this.WooCommerce.post('customers', userFormFields)
           .then((response) => {
+            this.snackbarColor = 'success'
             this.snackbarMsg = true
             this.snackbarContent =
               'Registration successful, You can now login with that account'
